@@ -45,7 +45,7 @@ export default function App() {
  return (
    <NavigationContainer>
      <Stack.Navigator>
-       <Stack.Screen name="Colour List" component={HomeScreen} />
+       <Stack.Screen name="Color List" component={HomeScreen} />
      </Stack.Navigator>
    </NavigationContainer>
  );
