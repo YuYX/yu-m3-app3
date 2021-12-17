@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
+import { LogoTitle } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import BlockRGB from "./components/BlockRGB";
@@ -42,7 +43,7 @@ function HomeScreen({ navigation }) {
      <FlatList style={styles.list} data={colorArray} renderItem={renderItem} />
    </View>
  );
-}
+}  
 
 function DetailsScreen({ route }) {
  // Destructure this object so we don't have to type route.params.red etc
@@ -69,8 +70,8 @@ const Stack = createStackNavigator();
 export default function App() {
  return (
    <NavigationContainer>
-     <Stack.Navigator>
-       <Stack.Screen name="Colour List" component={HomeScreen} />
+     <Stack.Navigator> 
+       <Stack.Screen name="Colour List" component={HomeScreen} /> 
        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
      </Stack.Navigator>
    </NavigationContainer>
