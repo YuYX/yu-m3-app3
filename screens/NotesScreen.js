@@ -48,7 +48,7 @@ export default function NotesScreen({ navigation, route }) {
       tx.executeSql(
         `CREATE TABLE IF NOT EXIST
         notes
-        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        (id INTEGER PRIMARY KEY AUTOINCREMENT, 
         title TEXT,
         done INT);`
       );
@@ -56,7 +56,7 @@ export default function NotesScreen({ navigation, route }) {
     null,
     refreshNotes
     );
- },[]) 
+ },[]); 
 
  useEffect(() => {
   if (route.params?.text) {
