@@ -56,8 +56,9 @@ export default function NotesScreen({ navigation, route }) {
     null,
     refreshNotes
     );
- },[]); 
+ },[]) 
 
+ // 2nd useEffect
  useEffect(() => {
   if (route.params?.text) {
     db.transaction(
