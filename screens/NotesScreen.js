@@ -42,7 +42,7 @@ export default function NotesScreen({ navigation, route }) {
     });
   });
  
-
+//2nd useEffect
  useEffect(() => {
     db.transaction((tx) =>{
       tx.executeSql(
@@ -58,7 +58,7 @@ export default function NotesScreen({ navigation, route }) {
     );
  },[]) 
 
- // 2nd useEffect
+ // 3nd useEffect
  useEffect(() => {
   if (route.params?.text) {
     db.transaction(
