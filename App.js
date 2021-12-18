@@ -17,12 +17,23 @@ function HomeScreen({ navigation }) {
   // 1. run when any component in the screen is updated
   // 2. run when the screen is rendered
   useEffect( () => {
-    console.log("Use effect");
+     navigation.setOptions({
+       headerRight: () => 
+       <Button 
+        onPress={addColor} 
+        title="Add color"></Button>
+     })
   });
 
  const [colorArray, setColorArray] = useState([]);
 
+ //{item} refers to a single item we pass in
+ // e.g. {item} =  {red: 255, green: 0, blue: 0, id: "0"} 
  function renderItem({ item }) {
+    // route = {}
+    // new_route = {...item} is the same as 
+    // new_route = {red: 255, green: 0, blue: 0, id: "0"}
+
    return (
      <TouchableOpacity
        onPress={() => navigation.navigate("DetailsScreen", { ...item })}
@@ -53,12 +64,13 @@ function HomeScreen({ navigation }) {
 
  return (
    <View style={styles.container}>
+      {/* Reset Button
      <TouchableOpacity
        style={{ height: 40, justifyContent: "center" }}
        onPress={addColor}
      >
        <Text style={{ color: "red" }}>Add colour</Text>
-     </TouchableOpacity>
+     </TouchableOpacity>*/}
 
      <TouchableOpacity
        style={{ height: 40, justifyContent: "center" }}
@@ -77,8 +89,13 @@ function HomeScreen({ navigation }) {
  );
 }  
 
+// route is a simple object
+// route = {}
 function DetailsScreen({ route }) {
  // Destructure this object so we don't have to type route.params.red etc
+ 
+ // route = {params: {red: 255, blue: 0, green: 0}}
+ // route.params = {red: 255, blue: 0, green: 0}
  const { red, green, blue } = route.params;
 
  return (
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
    justifyContent: "center",
  },
  list: { 
-   width: "100%", 
+   width: "100%",  
    borderColor: "red",
    borderWidth: 6
    ,
