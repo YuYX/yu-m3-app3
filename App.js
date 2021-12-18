@@ -120,7 +120,13 @@ export default function App() {
  return (
    <NavigationContainer>
      <Stack.Navigator> 
-       <Stack.Screen name="Colour List" component={HomeScreen} /> 
+       <Stack.Screen 
+        name="Colour List" 
+        component={HomeScreen} 
+        options={ {
+          title: 'Home', 
+          } }
+      /> 
        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
      </Stack.Navigator>
    </NavigationContainer>
