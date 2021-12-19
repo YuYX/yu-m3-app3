@@ -13,6 +13,7 @@ export default function BlockRGB(props) {
        backgroundColor: `rgb(${props.red}, ${props.green}, ${props.blue})`,
        padding: 30,
        width: tileSize,//"100%",
+       height: tileSize,
      }}
    ></View>
  );
