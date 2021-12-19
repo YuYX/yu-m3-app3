@@ -8,6 +8,7 @@ import {
     StyleSheet 
     } from "react-native";
 
+
 export default function AddScreen({ route, navigation }) {
     const [text, setText] = useState("");
    

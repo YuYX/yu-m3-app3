@@ -7,16 +7,19 @@ import {
  FlatList,
 } from "react-native";
 
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';  
+
+import * as FileSystem from "expo-file-system";
 
 import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("notes.db");
+console.log(FileSystem.documentDirectory); 
 
 export default function NotesScreen({ navigation, route }) {
  const [notes, setNotes] = useState([]);
 
-  function refreshNotes(){
+  function refreshNotes() {
     db.transaction((tx) => {
       tx.executeSql(
         "SELECT * FROM notes",
@@ -27,25 +30,26 @@ export default function NotesScreen({ navigation, route }) {
     });
   }
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={addNote}>
-          <Entypo
-            name="new-message"
-            size={24}
-            color="black"
-            style={{ marginRight: 20 }}
-          />
-        </TouchableOpacity>
-      ),
-    });
-  });
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity onPress={addNote}>
+  //         <Entypo
+  //           name="new-message"
+  //           size={24}
+  //           color="black"
+  //           style={{ marginRight: 20 }}
+  //         />
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // });
   
+  // This is to set up the database on first run
  useEffect(() => {
     db.transaction((tx) =>{
       tx.executeSql(
-        `CREATE TABLE IF NOT EXIST
+        `CREATE TABLE IF NOT EXISTS
         notes
         (id INTEGER PRIMARY KEY AUTOINCREMENT, 
         title TEXT,
@@ -57,6 +61,7 @@ export default function NotesScreen({ navigation, route }) {
     );
  },[]) 
  
+ // Monitor route.params for changes and add items to the database
  useEffect(() => {
   if (route.params?.text) {
     db.transaction(
@@ -68,13 +73,15 @@ export default function NotesScreen({ navigation, route }) {
     null,
     refreshNotes
     );
-
+    
+    //Needed to take out this? then cannot update the note inputted.
     const newNote = {
       title: route.params.text,
       done: false,
       id: notes.length.toString(),
     };
     setNotes([...notes, newNote]);
+
   }
 }, [route.params?.text]);
 
@@ -83,6 +90,19 @@ export default function NotesScreen({ navigation, route }) {
    navigation.navigate("Add Note");
  }
 
+ // This deletes an individual note
+ function deleteNote(id) {
+  console.log("Deleting " + id);
+  db.transaction(
+    (tx) => {
+      tx.executeSql(`DELETE FROM notes WHERE id=${id}`);
+    },
+    null,
+    refreshNotes
+  );
+}
+
+ // The function to render each row in our FlatList
  function renderItem({ item }) {
    return (
      <View
@@ -92,9 +112,15 @@ export default function NotesScreen({ navigation, route }) {
          paddingBottom: 20,
          borderBottomColor: "#ccc",
          borderBottomWidth: 1,
+         flexDirection: "row",
+         justifyContent: "space-between",
        }}
      >
        <Text style={{ textAlign: "left", fontSize: 16 }}>{item.title}</Text>
+       <TouchableOpacity onPress={() => deleteNote(item.id)}>
+          <Ionicons name="trash" size={16} color="#944" />
+        </TouchableOpacity>
+
      </View>
    );
  }
@@ -105,6 +131,7 @@ export default function NotesScreen({ navigation, route }) {
        style={{ width: "100%" }}
        data={notes}
        renderItem={renderItem}
+       keyExtractor={( item ) => item.id.toString()}
      />
    </View>
  );
